@@ -1,0 +1,30 @@
+<div class="alert alert-danger" ng-show="nhlStats.errorGoals">
+    Error ({{nhlStats.errorGoals.status}}). Unable to get Goals stats.
+    <a ui-sref="goals" class="alert alert-link">Click here to try again</a>
+</div>
+<table id="goalsTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Pos</th>
+            <th>GP</th>
+            <th class="mainColumn">G</th>
+            <th>A</th>
+            <th>P</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in nhlStats.goals">
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            <td>{{item[4]}}</td>
+            <td class="mainColumn">{{item[5]}}</td>
+            <td>{{item[6]}}</td>
+            <td>{{item[7]}}</td>
+        </tr>
+    </tbody>
+</table>

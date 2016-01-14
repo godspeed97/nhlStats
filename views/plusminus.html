@@ -1,0 +1,32 @@
+<div class="alert alert-danger" ng-show="nhlStats.errorPlusMinus">
+    Error ({{nhlStats.errorPlusMinus.status}}). Unable to get +/- stats.
+    <a ui-sref="plusminus" class="alert alert-link">Click here to try again</a>
+</div>
+<table id="plusminusTable" class="table table-striped">
+	<thead>
+		<tr>
+			<th>Rank</th>
+			<th>Name</th>
+			<th>Team</th>
+			<th>Pos</th>
+			<th>GP</th>
+			<th>G</th>
+			<th>A</th>
+			<th>P</th>
+			<th class="mainColumn">+/-</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="item in nhlStats.plusminus">
+			<td>{{item[0]}}</td>
+			<td>{{item[1]}}</td>
+			<td>{{item[2]}}</td>
+			<td>{{item[3]}}</td>
+			<td>{{item[4]}}</td>
+			<td>{{item[5]}}</td>
+			<td>{{item[6]}}</td>
+			<td>{{+item[5] + +item[6]}}</td>
+			<td class="mainColumn">{{item[7]}}</td>
+		</tr>
+	</tbody>
+</table>

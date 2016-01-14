@@ -1,0 +1,23 @@
+<div ng-controller="nhlTeamsCtrl as nhlTeams">
+    <div class="alert alert-danger" ng-show="nhlTeams.errorTeam">
+        Error ({{nhlTeams.errorTeam.status}}). Unable to get Teams stats.
+        <a ui-sref="teams" class="alert alert-link">Click here to try again</a>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 player" ng-repeat="player in nhlTeams.team">
+            <div class="col-xs-3">
+                <img src="{{player[0]}}" alt="{{player[1]}}">
+            </div>
+            <div class="col-xs-9">
+                <ul>
+                    <li><span class="playerName">{{player[1]}}</span> <span class="playerNumber">#{{player[2]}}</span></li>
+                    <li><span class="playerCategory">Position:</span> {{player[3]}}</li>
+                    <li><span class="playerCategory">Height:</span> {{player[4]}}</li>
+                    <li><span class="playerCategory">Weight:</span> {{player[5]}}</li>
+                    <li><span class="playerCategory">Birthdate:</span> {{player[6]}} (age {{player[7]}})</li>
+                    <li><span class="playerCategory">Birthplace:</span> {{player[8]}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

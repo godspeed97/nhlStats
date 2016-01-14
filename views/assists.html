@@ -1,0 +1,30 @@
+<div class="alert alert-danger" ng-show="nhlStats.errorAssists">
+    Error ({{nhlStats.errorAssists.status}}). Unable to get Assists stats.
+    <a ui-sref="assists" class="alert alert-link">Click here to try again</a>
+</div>
+<table id="assistsTable" class="table table-striped">
+	<thead>
+		<tr>
+			<th>Rank</th>
+			<th>Name</th>
+			<th>Team</th>
+			<th>Pos</th>
+			<th>GP</th>
+			<th>G</th>
+			<th class="mainColumn">A</th>
+			<th>P</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="item in nhlStats.assists">
+			<td>{{item[0]}}</td>
+			<td>{{item[1]}}</td>
+			<td>{{item[2]}}</td>
+			<td>{{item[3]}}</td>
+			<td>{{item[4]}}</td>
+			<td>{{item[5]}}</td>
+			<td class="mainColumn">{{item[6]}}</td>
+			<td>{{item[7]}}</td>
+		</tr>
+	</tbody>
+</table>

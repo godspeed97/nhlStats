@@ -1,0 +1,33 @@
+.mainColumn {
+  background-color: #cacaca;
+  font-weight: bold; }
+
+.team {
+  display: block;
+  width: 150px;
+  margin: 0 auto;
+  padding-bottom: 15px; }
+
+.player {
+  height: 150px;
+  width: 460px;
+  margin-bottom: 5px; }
+  .player img {
+    float: right; }
+  .player ul {
+    list-style: none;
+    padding-left: 0; }
+  .player li {
+    text-align: left; }
+  .player .playerName {
+    color: #595959;
+    font-size: 20px;
+    font-weight: bold; }
+  .player .playerNumber {
+    color: #b0b0b0;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 5px; }
+  .player .playerCategory {
+    font-weight: bold;
+    text-transform: uppercase; }

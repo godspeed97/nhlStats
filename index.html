@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="nhlStatsApp">
+
+<head>
+	<title>NHL Stats</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/master.css">
+</head>
+
+<body ng-controller="nhlStatsCtrl as nhlStats">
+	<div class="container">
+		<h1>NHL STATS</h1>
+		<div class="navbar">
+			<ul class="nav navbar-nav">
+				<li><a ui-sref="teams">Teams</a></li>
+				<li><a ui-sref="points">Points</a></li>
+				<li><a ui-sref="goals">Goals</a></li>
+				<li><a ui-sref="assists">Assists</a></li>
+				<li><a ui-sref="plusminus">+/-</a></li>
+			</ul>
+		</div>
+		<div ui-view="statsContent"></div>
+	</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+	<script src="js/mainModule.js"></script>
+    <script src="js/nhlStatsService.js"></script>
+	<script src="js/nhlStatsController.js"></script>
+    <script src="js/nhlTeamsController.js"></script>
+</body>
+
+</html>
