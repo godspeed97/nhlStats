@@ -1,3 +1,4 @@
+//this spec uses deferred antipattern, new version uses Promises/A+ polyfill for tests
 xdescribe('nhlStatsCtrl Unit Tests:', function () {
 
     var nhlStatsCtrl;

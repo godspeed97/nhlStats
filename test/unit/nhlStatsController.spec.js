@@ -1,4 +1,4 @@
-xdescribe('test', function () {
+describe('test', function () {
 
     var $controller;
     var nhlStatsSvc;
