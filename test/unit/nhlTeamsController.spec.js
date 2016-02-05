@@ -3,7 +3,7 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
     var $controller;
     var nhlStatsSvc;
     var nhlTeamsCtrl;
-    var promise;
+    var resolvedPromise;
     var mockData = {
         goalie: [
             {
@@ -53,19 +53,16 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
     beforeEach(inject(function (_$controller_, _nhlStatsSvc_) {
         $controller = _$controller_;
         nhlStatsSvc = _nhlStatsSvc_;
-
-        promise = new Promise(function (resolve) {
-            resolve(mockData);
-        });
-
+        resolvedPromise = Promise.resolve(mockData);
+        
         spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
-            return promise;
+            return resolvedPromise;
         });
     }));
 
     it('nhlStatsSvc.getStats should have been called', function () {
         nhlTeamsCtrl = $controller('nhlTeamsCtrl', { nhlStatsSvc: nhlStatsSvc });
-        promise.then(function (data) {
+        resolvedPromise.then(function (data) {
             expect(nhlStatsSvc.getStats).toHaveBeenCalled();
             done();
         });
@@ -73,8 +70,19 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
     
     it('nhlTeamsCtrl.team should have the processed value', function (done) {  
         nhlTeamsCtrl = $controller('nhlTeamsCtrl', { nhlStatsSvc: nhlStatsSvc });       
-        promise.then(function (data) {
+        resolvedPromise.then(function (data) {
             expect(nhlTeamsCtrl.team).toEqual(mockDataProcessed); 
+            done();
+        });
+    });
+    
+    it('nhlTeamsCtrl.errorTeam should contain the error after nhlStatsSvc.getStats throws an error', function (done) {
+        resolvedPromise.then(function (res) {
+            throw new Error('oops');
+        })
+        .catch(function (err) {
+            nhlTeamsCtrl.errorTeam = err
+            expect(nhlTeamsCtrl.errorTeam).toEqual(err);
             done();
         });
     });

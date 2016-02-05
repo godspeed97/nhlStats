@@ -3,7 +3,7 @@ describe('test', function () {
     var $controller;
     var nhlStatsSvc;
     var nhlStatsCtrl;
-    var promise;
+    var resolvedPromise;
     var mockData = {
         skaterData: [
             { "id": 8474141, data: '1, CHI, R, P. Kane, 39, 23, 33, 56' },
@@ -18,45 +18,51 @@ describe('test', function () {
         ['3', ' DAL', ' C', ' T. Seguin', ' 40', ' 23', ' 27', ' 50'],
         ['4', ' OTT', ' D', ' E. Karlsson', ' 51', ' 11', ' 42', ' 53']
     ];
-    
+
     beforeEach(module('nhlStatsApp'));
 
     beforeEach(inject(function (_$controller_, _nhlStatsSvc_) {
         $controller = _$controller_;
         nhlStatsSvc = _nhlStatsSvc_;
-        
-        promise = new Promise(function (resolve) {
-            resolve(mockData);
-        });
+        resolvedPromise = Promise.resolve(mockData);
         
         spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
-            return promise;
+            return resolvedPromise;
         });
-    }));
-    
-    it('nhlStatsSvc.getStats should have been called', function () {
         nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
-        promise.then(function (data) {
+    }));
+
+
+    it('nhlStatsSvc.getStats should have been called', function (done) {
+        resolvedPromise.then(function (data) {
             expect(nhlStatsSvc.getStats).toHaveBeenCalled();
             done();
         });
     });
 
-    it('nhlStatsCtrl.points should have the processed value', function (done) {  
-        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });        
-        promise.then(function (data) {
-            expect(nhlStatsCtrl.points).toEqual(mockDataProcessed); 
+    it('nhlStatsCtrl.points should have the processed value', function (done) {
+        resolvedPromise.then(function (data) {
+            expect(nhlStatsCtrl.points).toEqual(mockDataProcessed);
             done();
         });
     });
-    
+
+    it('nhlStatsCtrl.errorPoints should contain the error after nhlStatsSvc.getStats throws an error', function (done) {
+        resolvedPromise.then(function (res) {
+            throw new Error('oops');
+        })
+        .catch(function (err) {
+            nhlStatsCtrl.errorPoints = err
+            expect(nhlStatsCtrl.errorPoints).toEqual(err);
+            done();
+        });
+    });
+
     it('nhlStatsCtrl should be defined', function () {
-        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
         expect(nhlStatsCtrl).toBeDefined();
     });
 
     it('nhlStatsCtrl instance variables should be defined', function () {
-        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
         expect(nhlStatsCtrl.points).toBeDefined();
         expect(nhlStatsCtrl.goals).toBeDefined();
         expect(nhlStatsCtrl.assists).toBeDefined();

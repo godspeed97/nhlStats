@@ -14,6 +14,8 @@
         
         vm.team = [];
         
+        vm.errorTeam = '';
+        
         //TEAMS------------------------------
 		nhlStatsSvc.getStats(teamUrl)
 			.then(function (data) {
