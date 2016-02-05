@@ -52,7 +52,7 @@ describe('test', function () {
             throw new Error('oops');
         })
         .catch(function (err) {
-            nhlStatsCtrl.errorPoints = err
+            nhlStatsCtrl.errorPoints = err;
             expect(nhlStatsCtrl.errorPoints).toEqual(err);
             done();
         });

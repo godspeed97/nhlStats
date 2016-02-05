@@ -81,7 +81,7 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
             throw new Error('oops');
         })
         .catch(function (err) {
-            nhlTeamsCtrl.errorTeam = err
+            nhlTeamsCtrl.errorTeam = err;
             expect(nhlTeamsCtrl.errorTeam).toEqual(err);
             done();
         });
