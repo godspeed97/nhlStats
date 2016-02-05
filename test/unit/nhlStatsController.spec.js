@@ -29,18 +29,24 @@ describe('nhlStatsCtrl Unit Tests:', function () {
         $q = _$q_;
         $scope = _$rootScope_.$new();
         deferred = $q.defer();
-
+        
         nhlStatsSvc = _nhlStatsSvc_;
         spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
             return deferred.promise;
         });
     }));
 
-    it('testing this shit', function () {
+    it('nhlStatsSvc.getStats should have been called', function () {
         nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
         deferred.resolve(mockData);
         $scope.$apply();
         expect(nhlStatsSvc.getStats).toHaveBeenCalled();
+    });
+
+    it('nhlStatsCtrl.points should have the processed value', function () {
+        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
+        deferred.resolve(mockData);
+        $scope.$apply();
         expect(nhlStatsCtrl.points).toEqual(mockDataProcessed);
     });
 
