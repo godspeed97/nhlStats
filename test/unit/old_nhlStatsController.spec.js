@@ -1,9 +1,11 @@
-xdescribe('test', function () {
+xdescribe('nhlStatsCtrl Unit Tests:', function () {
 
-    var $controller;
-    var nhlStatsSvc;
     var nhlStatsCtrl;
-    var promise;
+    var nhlStatsSvc;
+    var $controller;
+    var $q;
+    var $scope;
+    var deferred;
     var mockData = {
         skaterData: [
             { "id": 8474141, data: '1, CHI, R, P. Kane, 39, 23, 33, 56' },
@@ -18,39 +20,36 @@ xdescribe('test', function () {
         ['3', ' DAL', ' C', ' T. Seguin', ' 40', ' 23', ' 27', ' 50'],
         ['4', ' OTT', ' D', ' E. Karlsson', ' 51', ' 11', ' 42', ' 53']
     ];
-    
+
     beforeEach(module('nhlStatsApp'));
 
-    beforeEach(inject(function (_$controller_, _nhlStatsSvc_) {
+    beforeEach(inject(function (_$controller_, _$rootScope_, _$q_, _nhlStatsSvc_) {
         $controller = _$controller_;
+
+        $q = _$q_;
+        $scope = _$rootScope_.$new();
+        deferred = $q.defer();
+
         nhlStatsSvc = _nhlStatsSvc_;
-        
-        promise = new Promise(function (resolve) {
-            resolve(mockData);
-        });
-        
         spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
-            return promise;
+            return deferred.promise;
         });
     }));
-    
+
     it('nhlStatsSvc.getStats should have been called', function () {
         nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
-        promise.then(function (data) {
-            expect(nhlStatsSvc.getStats).toHaveBeenCalled();
-            done();
-        });
+        deferred.resolve(mockData);
+        $scope.$apply();
+        expect(nhlStatsSvc.getStats).toHaveBeenCalled();
     });
 
-    it('nhlStatsCtrl.points should have the processed value', function (done) {  
+    it('nhlStatsCtrl.points should have the processed value', function () {
         nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
-        
-        promise.then(function (data) {
-            expect(nhlStatsCtrl.points).toEqual(mockDataProcessed); 
-            done();
-        });
+        deferred.resolve(mockData);
+        $scope.$apply();
+        expect(nhlStatsCtrl.points).toEqual(mockDataProcessed);
     });
-    
+
     it('nhlStatsCtrl should be defined', function () {
         nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
         expect(nhlStatsCtrl).toBeDefined();
