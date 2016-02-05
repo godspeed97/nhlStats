@@ -3,10 +3,10 @@
     angular.module('nhlStatsApp')
         .controller('nhlTeamsCtrl', nhlTeamsCtrl);
 
-    function nhlTeamsCtrl(nhlStatsSvc, $stateParams) {
+    function nhlTeamsCtrl(nhlStatsSvc, $stateParams, $log) {
         
         var vm = this;       
-        var teamUrl = 'https://jsonp.nodejitsu.com/?url=http://nhlwc.cdnak.neulion.com/fs1/nhl/league/teamroster/' + $stateParams.team + '/iphone/clubroster.json';
+        var teamUrl = 'https://jsonp.afeld.me/?url=http://nhlwc.cdnak.neulion.com/fs1/nhl/league/teamroster/' + $stateParams.team + '/iphone/clubroster.json';
         
         function returnObjData (obj) {
 			return [obj.imageUrl, obj.name, obj.number, obj.position, obj.height, obj.weight, obj.birthdate, obj.age, obj.birthplace];

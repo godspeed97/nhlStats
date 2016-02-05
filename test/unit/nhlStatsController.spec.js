@@ -43,8 +43,7 @@ describe('test', function () {
     });
 
     it('nhlStatsCtrl.points should have the processed value', function (done) {  
-        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
-        
+        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });        
         promise.then(function (data) {
             expect(nhlStatsCtrl.points).toEqual(mockDataProcessed); 
             done();
