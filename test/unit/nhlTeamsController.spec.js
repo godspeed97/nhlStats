@@ -60,7 +60,7 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
         });
     }));
 
-    it('nhlStatsSvc.getStats should have been called', function () {
+    it('nhlStatsSvc.getStats should have been called', function (done) {
         nhlTeamsCtrl = $controller('nhlTeamsCtrl', { nhlStatsSvc: nhlStatsSvc });
         resolvedPromise.then(function (data) {
             expect(nhlStatsSvc.getStats).toHaveBeenCalled();
