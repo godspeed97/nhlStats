@@ -4,6 +4,7 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
     var nhlStatsSvc;
     var nhlTeamsCtrl;
     var resolvedPromise;
+    var rejectedPromise;
     var mockData = {
         goalie: [
             {
@@ -54,13 +55,13 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
         $controller = _$controller_;
         nhlStatsSvc = _nhlStatsSvc_;
         resolvedPromise = Promise.resolve(mockData);
-        
-        spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
-            return resolvedPromise;
-        });
+        rejectedPromise = Promise.reject('error occurred');
     }));
 
     it('nhlStatsSvc.getStats should have been called', function (done) {
+        spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
+            return resolvedPromise;
+        });
         nhlTeamsCtrl = $controller('nhlTeamsCtrl', { nhlStatsSvc: nhlStatsSvc });
         resolvedPromise.then(function (data) {
             expect(nhlStatsSvc.getStats).toHaveBeenCalled();
@@ -68,7 +69,10 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
         });
     });
     
-    it('nhlTeamsCtrl.team should have the processed value', function (done) {  
+    it('nhlTeamsCtrl.team should have the processed value', function (done) {
+        spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
+            return resolvedPromise;
+        });
         nhlTeamsCtrl = $controller('nhlTeamsCtrl', { nhlStatsSvc: nhlStatsSvc });       
         resolvedPromise.then(function (data) {
             expect(nhlTeamsCtrl.team).toEqual(mockDataProcessed); 
@@ -77,11 +81,14 @@ describe('nhlTeamsCtrl Unit Tests:', function () {
     });
     
     it('nhlTeamsCtrl.errorTeam should contain the error after nhlStatsSvc.getStats throws an error', function (done) {
-        resolvedPromise.then(function (res) {
-            throw new Error('oops');
+        spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
+            return rejectedPromise;
+        });
+        nhlTeamsCtrl = $controller('nhlTeamsCtrl', { nhlStatsSvc: nhlStatsSvc });  
+        rejectedPromise.then(function (res) {
+            //...
         })
         .catch(function (err) {
-            nhlTeamsCtrl.errorTeam = err;
             expect(nhlTeamsCtrl.errorTeam).toEqual(err);
             done();
         });

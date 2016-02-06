@@ -4,6 +4,7 @@ describe('test', function () {
     var nhlStatsSvc;
     var nhlStatsCtrl;
     var resolvedPromise;
+    var rejectedPromise;
     var mockData = {
         skaterData: [
             { "id": 8474141, data: '1, CHI, R, P. Kane, 39, 23, 33, 56' },
@@ -25,15 +26,14 @@ describe('test', function () {
         $controller = _$controller_;
         nhlStatsSvc = _nhlStatsSvc_;
         resolvedPromise = Promise.resolve(mockData);
-        
+        rejectedPromise = Promise.reject('oops');    
+    }));
+
+    it('nhlStatsSvc.getStats should have been called', function (done) {
         spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
             return resolvedPromise;
         });
         nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
-    }));
-
-
-    it('nhlStatsSvc.getStats should have been called', function (done) {
         resolvedPromise.then(function (data) {
             expect(nhlStatsSvc.getStats).toHaveBeenCalled();
             done();
@@ -41,6 +41,10 @@ describe('test', function () {
     });
 
     it('nhlStatsCtrl.points should have the processed value', function (done) {
+        spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
+            return resolvedPromise;
+        });
+        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
         resolvedPromise.then(function (data) {
             expect(nhlStatsCtrl.points).toEqual(mockDataProcessed);
             done();
@@ -48,11 +52,14 @@ describe('test', function () {
     });
 
     it('nhlStatsCtrl.errorPoints should contain the error after nhlStatsSvc.getStats throws an error', function (done) {
-        resolvedPromise.then(function (res) {
-            throw new Error('oops');
+        spyOn(nhlStatsSvc, 'getStats').and.callFake(function () {
+            return rejectedPromise;
+        });
+        nhlStatsCtrl = $controller('nhlStatsCtrl', { nhlStatsSvc: nhlStatsSvc });
+        rejectedPromise.then(function (res) {
+            //...
         })
         .catch(function (err) {
-            nhlStatsCtrl.errorPoints = err;
             expect(nhlStatsCtrl.errorPoints).toEqual(err);
             done();
         });
